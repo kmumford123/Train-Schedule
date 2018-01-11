@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+
+<html lang="en-us">
+
+<head>
+
+    <meta charset="UTF-8">
+    <title>Schedmoowal</title>
+    <style>
+        table {
+            font-family: arial, sans-serif;
+            border-collapse: collapse;
+            width: 100%;
+        }
+        
+        td,
+        th {
+            border-bottom: 1px solid rgb(150, 146, 146);
+            text-align: left;
+            padding: 40px;
+        }
+    </style>
+
+    <!-- Bootstrap -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+
+</head>
+
+<body>
+
+    <div class="container">
+
+        <br>
+
+        <!-- Jumbotron -->
+        <div class="jumbotron">
+            <h1 class="text-center">Welcome to Chicago Union Station</h1>
+            <h2 class="text-center">Train Schedules are listed Below</h2>
+            <h3 class="text-center">Courtesy of RTA travel</h3>
+        </div>
+
+        <div class="row">
+
+            <!-- Most Recent Member Panel -->
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">MetraRail Travel</h3>
+                    </div>
+                    <div class="panel-body" id="recent-member">
+                        <table>
+                            <tr>
+                                <th>Train Line</th>
+                                <th>Destination</th>
+                                <th>Frequency (min)</th>
+                                <th>Next Arrival</th>
+                                <th>Minutes Away</th>
+                            </tr>
+                            <tr>
+                                <td>Malibu</td>
+                                <td>Santa Monica</td>
+                                <td>12</td>
+                                <td>06:17</td>
+                                <td>04:00</td>
+                            </tr>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sign-Up Panel-->
+            <div class="col-lg-12">
+                <div class="panel panel-default">
+                    <div class="panel-heading">
+                        <h3 class="panel-title">New Member Sign-Up</h3>
+                    </div>
+                    <div class="panel-body">
+
+                        <!-- Sign-up Form (note the various input "types")-->
+                        <form role="form">
+                            <div class="form-group">
+                                <label for="name-input">Name:</label>
+                                <input class="form-control" id="name-input" type="text">
+                            </div>
+                            <div class="form-group">
+                                <label for="email-input">Email:</label>
+                                <input class="form-control" id="email-input" type="email">
+                            </div>
+                            <div class="form-group">
+                                <label for="age-input">Age:</label>
+                                <input class="form-control" id="age-input" type="number">
+                            </div>
+                            <div class="form-group">
+                                <label for="comment-input">How did you hear about us?</label>
+                                <textarea class="form-control" id="comment-input" rows="5"></textarea>
+                            </div>
+                            <button class="btn btn-default" id="add-user" type="submit">Submit</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- jQuery -->
+    <script src="https://code.jquery.com/jquery.js"></script>
+
+    <!-- Script -->
+    <script>
+        // Capture Button Click
+        $("#add-user").on("click", function(event) {
+            // prevent form from trying to submit/refresh the page
+            event.preventDefault();
+
+            // Capture User Inputs and store them into variables
+            var name = $("#name-input").val().trim();
+            var email = $("#email-input").val().trim();
+            var age = $("#age-input").val().trim();
+            var comment = $("#comment-input").val().trim();
+
+
+            // Console log each of the user inputs to confirm we are receiving them
+            console.log(name);
+            console.log(email);
+            console.log(age);
+            console.log(comment);
+
+            // Output all of the new information into the relevant HTML sections
+            $("#name-display").text(name);
+            $("#email-display").text(email);
+            $("#age-display").text(age);
+            $("#comment-display").text(comment);
+
+            //Clear Storage
+            localStorage.clear();
+
+            //Store all content into localStorage
+            var storageArray = ["name", "email", "age", "comment"];
+            for (var i = 0; i < storageArray.length; i++) {
+                localStorage.setItem(storageArray[i], $(`#${storageArray[i]}-input`).val().trim());
+            }
+
+
+            // localStorage.setItem("name", name);
+            // localStorage.setItem("email", email);
+            // localStorage.setItem("age", age);
+            // localStorage.setItem("comment", comment);
+        });
+
+        //Store all content into the localStorage
+        var storageGetArray = ["name", "email", "age", "comment"];
+        for (var i = 0; i < storageGetArray.length; ++i) {
+            $(`#${storageGetArray[i]}-display`).text(localStorage.getItem(`${storageGetArray[i]}`));
+        }
+        // $("#name-display").text(localStorage.getItem("name"))
+        // $("#email-display").text(localStorage.getItem("email"))
+        // $("#age-display").text(localStorage.getItem("age"))
+        // $("#comment-display").text(localStorage.getItem("comment"))
+    </script>
+
+</body>
+
+</html>
