@@ -12,7 +12,7 @@ th {
 }
 
 .jumbotron {
-    background-color: #476bc0;
+    background-color: #337ab7;
     font-family: 'Share Tech Mono', monospace;
 }
 
@@ -25,10 +25,20 @@ h3 {
 
 .panel-default>.panel-heading {
     color: #333;
-    background-color: #476bc0;
+    background-color: #337ab7;
     border-color: #ddd;
 }
 
-.panel-title {
+.panel-default>.panel-heading>.panel-title {
     color: #f8f8f8;
+}
+
+.section-heading {
+    color: #333;
+    font-family: 'Share Tech Mono', monospace;
+}
+
+.fa fa-phone fa-3x mb-3 sr-contact,
+p {
+    font-family: 'Share Tech Mono', monospace;
 }

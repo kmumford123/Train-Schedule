@@ -1,17 +1,17 @@
+// Initialize Firebase
+var config = {
+    apiKey: "AIzaSyDFIfZZcOntbvkq2aJ732z1j8rHaU-qAE8",
+    authDomain: "schedjmoowal.firebaseapp.com",
+    databaseURL: "https://schedjmoowal.firebaseio.com",
+    projectId: "schedjmoowal",
+    storageBucket: "schedjmoowal.appspot.com",
+    messagingSenderId: "12930270687"
+};
+
+firebase.initializeApp(config);
+
 //Ready document
 $(document).ready(function() {
-
-    // Initialize Firebase
-    var config = {
-        apiKey: "AIzaSyDFIfZZcOntbvkq2aJ732z1j8rHaU-qAE8",
-        authDomain: "schedjmoowal.firebaseapp.com",
-        databaseURL: "https://schedjmoowal.firebaseio.com",
-        projectId: "schedjmoowal",
-        storageBucket: "schedjmoowal.appspot.com",
-        messagingSenderId: "12930270687"
-    };
-
-    window.firebase.initializeApp(config);
 
     // Create a variable to reference the database
     var database = firebase.database();
