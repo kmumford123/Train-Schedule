@@ -16,54 +16,116 @@ $(document).ready(function() {
     // Create a variable to reference the database
     var database = firebase.database();
 
-    database.ref().on("value", function(snapshot) {
-        // Capture Button Click
-        $("#add-user").on("click", function(event) {
-            // prevent form from trying to submit/refresh the page
-            event.preventDefault();
+    var connectionsRef = database.ref("/connections");
 
-            // Capture User Inputs and store them into variables
-            var train = $("#train-input").val().trim();
-            var destination = $("#destination-input").val().trim();
-            var arrival = $("#arrival-input").val().trim();
-            var frequency = $("#frequency-input").val().trim();
+    // '.info/connected' is a special location provided by Firebase that is updated
+    // every time the client's connection state changes.
+    // '.info/connected' is a boolean value, true if the client is connected and false if they are not.
+    var connectedRef = database.ref(".info/connected");
 
-            // Console log each of the user inputs to confirm we are receiving them
-            console.log(train);
-            console.log(destination);
-            console.log(arrival);
-            console.log(frequency);
+    // When the client's connection state changes...
+    connectedRef.on("value", function(snap) {
 
-            // Output all of the new information into the relevant HTML sections
-            $("#train-display").text(train);
-            $("#destination-display").text(destination);
-            $("#arrival-display").text(arrival);
-            $("#frequency-display").text(frequency);
+        // If they are connected..
+        if (snap.val()) {
 
-        });
-
-        //Clear Storage
-        localStorage.clear();
-
-        //Store all content into localStorage
-        var storageArray = ["train", "destination", "arrival", "frequency"];
-        for (var i = 0; i < storageArray.length; i++) {
-            localStorage.setItem(storageArray[i], $(`#${storageArray[i]}-input`).val().trim());
+            // Add user to the connections list.
+            var con = connectionsRef.push(true);
+            // Remove user from the connection list when they disconnect.
+            con.onDisconnect().remove();
         }
-
-        // localStorage.setItem("train", train);
-        // localStorage.setItem("destination", destination);
-        // localStorage.setItem("arrival", arrival);
-        // localStorage.setItem("frequency", frequency);
     });
 
-    //Store all content into the localStorage
-    var storageGetArray = ["train", "arrival", "age", "frequency"];
-    for (var i = 0; i < storageGetArray.length; ++i) {
-        $(`#${storageGetArray[i]}-display`).text(localStorage.getItem(`${storageGetArray[i]}`));
-    }
-    // $("#train-display").text(localStorage.getItem("train"))
-    // $("#arrival-display").text(localStorage.getItem("arrival"))
-    // $("#age-display").text(localStorage.getItem("age"))
-    // $("#frequency-display").text(localStorage.getItem("frequency"));
-})
+    // When first loaded or when the connections list changes...
+    connectionsRef.on("value", function(snap) {
+
+        // Display the viewer count in the html.
+        // The number of online users is the number of children in the connections list.
+        $("#connected-viewers").text(snap.numChildren());
+    });
+
+    // Initial Values
+    var inTrain = "No train Selected"
+    var inDestination = "Destination"
+    var inArrival = "00:00:00 AM/PM"
+    var inFrequency = "ASAP"
+
+    database.ref("/trainData").on("value", function(snapchat) {
+
+        //If Firebase has a stored variables (first case)
+
+        if (snapchat.child("train").exists() && snapchat.child("destination").exists() && snapchat.child("arrival").exists() && snapchat.child("frequency").exists()) {
+
+            // Set the local variables for highBidder equal to the stored values in firebase.
+            train = snapchat.val().train;
+            destination = snapchat.val().destination;
+            arrival = parseInt(snapchat.val().arrival);
+            frequency = snapchat.val().frequency;
+
+            $("#train-display").text(snapchat.val().inTrain);
+            $("#destination-display").text(snapchat.val().inDestination);
+            $("#arrival-display").text("$" + snapchat.val().inArrival);
+            $("#frequency-display").text("$" + snapchat.val().inFrequency);
+
+            consol.log(snapchat.val().inTrain);
+            consol.log(snapchat.val().inArrival);
+        }
+
+        // Else Firebase doesn't have stored variables, so use the initial local values.
+        else {
+
+            // Change the HTML to reflect the local value in firebase
+            $("#train-display").text(inTrain);
+            $("#destination-display").text(inDestination);
+            $("#arrival-display").text(inArrival);
+            $("#frequency-display").text(inFrequency);
+
+            // Print the local data to the console.
+            console.log(inTrain);
+            console.log(inArrival);
+            console.log(inDestination);
+            console.log(inFrequency);
+        }
+
+        // If any errors are experienced, log them to console.
+    }, function(errorObject) {
+        console.log("The read failed: " + errorObject.code);
+    });
+
+    $("#add-newTrain").on("click", function(event) {
+        event.preventDefault();
+
+        // Get the input values
+        var train = $("#train-input").val().trim();
+        var destination = $("#destination-input").val().trim();
+        var arrival = $("#arrival-input").val().trim();
+        var frequency = $("#frequency-input").val().trim();
+
+        // Log the train values
+        // console.log(train);
+        // console.log(destination);
+        // console.log(arrival);
+        // console.log(frequency);
+
+
+        // Save the new price in Firebase
+        database.ref("/newtrainData").push({
+            trainName: train,
+            trainDest: destination,
+            arrivalTime: arrival,
+            trainFreq: frequency
+        });
+        console.log(database.ref("/newtraindata"));
+
+        // Log the new High Price
+        // console.log(train);
+        // console.log(arrival);
+
+        // Change the HTML to reflect the added values
+        $(".train-display").text(database.train);
+        $(".destination-display").text(database.destination);
+        $(".arrival-display").text(database.arrival);
+        $(".frequency-display").text(database.frequency);
+
+    });
+});
