@@ -56,19 +56,19 @@ $(document).ready(function() {
 
         if (snapchat.child("train").exists() && snapchat.child("destination").exists() && snapchat.child("arrival").exists() && snapchat.child("frequency").exists()) {
 
-            // Set the local variables for highBidder equal to the stored values in firebase.
-            train = snapchat.val().train;
-            destination = snapchat.val().destination;
-            arrival = parseInt(snapchat.val().arrival);
-            frequency = snapchat.val().frequency;
+            // Set the local variables equal to the stored values in firebase.
+            dbtrain = snapchat.val().train;
+            dbdestination = snapchat.val().destination;
+            dbarrival = parseInt(snapchat.val().arrival);
+            dbfrequency = snapchat.val().frequency;
 
-            $("#train-display").text(snapchat.val().inTrain);
-            $("#destination-display").text(snapchat.val().inDestination);
-            $("#arrival-display").text("$" + snapchat.val().inArrival);
-            $("#frequency-display").text("$" + snapchat.val().inFrequency);
+            $("#train-display").append(dbtrain);
+            $("#destination-display").append(dbdestination);
+            $("#arrival-display").append(dbarrival);
+            $("#frequency-display").append(dbfrequency);
 
-            consol.log(snapchat.val().inTrain);
-            consol.log(snapchat.val().inArrival);
+            consol.log(dbtrain);
+            consol.log(dbdestination);
         }
 
         // Else Firebase doesn't have stored variables, so use the initial local values.
@@ -96,10 +96,12 @@ $(document).ready(function() {
         event.preventDefault();
 
         // Get the input values
-        var train = $("#train-input").val().trim();
-        var destination = $("#destination-input").val().trim();
-        var arrival = $("#arrival-input").val().trim();
-        var frequency = $("#frequency-input").val().trim();
+        var dbtrain = $("#train-input").val().trim();
+        var ddbbdestination = $("#destination-input").val().trim();
+        var dbarrival = $("#arrival-input").val().trim();
+        var dbfrequency = $("#frequency-input").val().trim();
+
+        console.log(dbtrain);
 
         // Log the train values
         // console.log(train);
@@ -122,10 +124,7 @@ $(document).ready(function() {
         // console.log(arrival);
 
         // Change the HTML to reflect the added values
-        $(".train-display").text(database.train);
-        $(".destination-display").text(database.destination);
-        $(".arrival-display").text(database.arrival);
-        $(".frequency-display").text(database.frequency);
+        $("#data").append('<tr><td>' + snapchat.child("train") + '</td><td>' + snapchat.child("destination") + '</td></tr>')
 
     });
 });
