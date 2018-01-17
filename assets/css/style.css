@@ -29,7 +29,6 @@ h3 {
 
 .jumbotron img {
     width: 100%;
-    /* the image will now scale down as its parent gets smaller */
 }
 
 .panel-default>.panel-heading {
