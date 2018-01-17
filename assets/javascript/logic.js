@@ -50,44 +50,21 @@ $(document).ready(function() {
     var inArrival = "00:00:00 AM/PM"
     var inFrequency = "ASAP"
 
-    database.ref("/trainData").on("value", function(snapchat) {
+    database.ref("/newtrainData").on("value", function(snapchat) {
 
-        //If Firebase has a stored variables (first case)
+        snapchat.forEach(function(child) {
+            $(".trainName").append(child.val().trainName);
+            $(".trainDest").append(child.val().trainDest);
+            $(".arrivalTime").append(child.val().arrivalTime);
+            $(".trainFreq").append(child.val().trainFreq);
 
-        if (snapchat.child("train").exists() && snapchat.child("destination").exists() && snapchat.child("arrival").exists() && snapchat.child("frequency").exists()) {
+            //firebase data populating but not formulating.
+            //different data keys stored in firebase database
+            //will work to appropriately format values.
 
-            // Set the local variables equal to the stored values in firebase.
-            dbtrain = snapchat.val().train;
-            dbdestination = snapchat.val().destination;
-            dbarrival = parseInt(snapchat.val().arrival);
-            dbfrequency = snapchat.val().frequency;
 
-            $("#train-display").append(dbtrain);
-            $("#destination-display").append(dbdestination);
-            $("#arrival-display").append(dbarrival);
-            $("#frequency-display").append(dbfrequency);
+        });
 
-            consol.log(dbtrain);
-            consol.log(dbdestination);
-        }
-
-        // Else Firebase doesn't have stored variables, so use the initial local values.
-        else {
-
-            // Change the HTML to reflect the local value in firebase
-            $("#train-display").text(inTrain);
-            $("#destination-display").text(inDestination);
-            $("#arrival-display").text(inArrival);
-            $("#frequency-display").text(inFrequency);
-
-            // Print the local data to the console.
-            console.log(inTrain);
-            console.log(inArrival);
-            console.log(inDestination);
-            console.log(inFrequency);
-        }
-
-        // If any errors are experienced, log them to console.
     }, function(errorObject) {
         console.log("The read failed: " + errorObject.code);
     });
@@ -97,34 +74,18 @@ $(document).ready(function() {
 
         // Get the input values
         var dbtrain = $("#train-input").val().trim();
-        var ddbbdestination = $("#destination-input").val().trim();
+        var dbdestination = $("#destination-input").val().trim();
         var dbarrival = $("#arrival-input").val().trim();
         var dbfrequency = $("#frequency-input").val().trim();
 
-        console.log(dbtrain);
-
-        // Log the train values
-        // console.log(train);
-        // console.log(destination);
-        // console.log(arrival);
-        // console.log(frequency);
-
-
-        // Save the new price in Firebase
+        // Save the new table values in Firebase
         database.ref("/newtrainData").push({
-            trainName: train,
-            trainDest: destination,
-            arrivalTime: arrival,
-            trainFreq: frequency
+            trainName: dbtrain,
+            trainDest: dbdestination,
+            arrivalTime: dbarrival,
+            trainFreq: dbfrequency
         });
-        console.log(database.ref("/newtraindata"));
 
-        // Log the new High Price
-        // console.log(train);
-        // console.log(arrival);
-
-        // Change the HTML to reflect the added values
-        $("#data").append('<tr><td>' + snapchat.child("train") + '</td><td>' + snapchat.child("destination") + '</td></tr>')
 
     });
 });
