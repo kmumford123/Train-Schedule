@@ -1,4 +1,4 @@
-table {
+    table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
@@ -15,7 +15,6 @@ th {
     background-color: #337ab7;
     font-family: 'Share Tech Mono', monospace;
     max-width: 1100px;
-    /* max-width doesn't behave correctly in legacy IE */
     margin: 0 auto;
     margin-bottom: 20px;
 }
@@ -46,7 +45,11 @@ h3 {
     font-family: 'Share Tech Mono', monospace;
 }
 
-.fa fa-phone fa-3x mb-3 sr-contact,
+.fa .fa-phone .fa-3x .mb-3 .sr-contact,
 p {
     font-family: 'Share Tech Mono', monospace;
+    width: 100%;
 }
+
+.row .fa .fa-phone .fa-3x .mb-3 .sr-contact {
+    max-width: 300px;
