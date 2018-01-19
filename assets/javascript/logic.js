@@ -53,10 +53,18 @@ $(document).ready(function() {
     database.ref("/newtrainData").on("value", function(snapchat) {
 
         snapchat.forEach(function(child) {
-            $(".trainName").append(child.val().trainName);
-            $(".trainDest").append(child.val().trainDest);
-            $(".arrivalTime").append(child.val().arrivalTime);
-            $(".trainFreq").append(child.val().trainFreq);
+            var html = `
+                <tr "recent-member">;
+                    <td class="trainName">${child.val().trainName}</td>
+                    <td class="trainDest">${child.val().trainDest}</td>
+                    <td class="Arrival">${child.val().arrivalTime}</td>
+                    <td class="TrainFreq">${child.val().trainFreq}</td>
+                </tr>
+            `;
+            $(".new-train-display").append(html);
+            // $(".trainDest").append(child.val().trainDest);
+            // $(".arrivalTime").append(child.val().arrivalTime);
+            // $(".trainFreq").append(child.val().trainFreq);
 
             //firebase data populating but not formulating.
             //different data keys stored in firebase database
